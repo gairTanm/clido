@@ -6,6 +6,8 @@ import (
 
 	"clido/db"
 
+	"github.com/ttacon/chalk"
+
 	"github.com/spf13/cobra"
 )
 
@@ -16,10 +18,10 @@ var addCmd = &cobra.Command{
 		task := strings.Join(args, " ")
 		_, err := db.CreateTask(task)
 		if err != nil {
-			fmt.Println("Some error occurred", err.Error(), "can't continue")
+			fmt.Println(chalk.Red, "Some error occurred", err.Error(), "can't continue", chalk.Reset)
 			return
 		}
-		fmt.Println("Added", strings.Join(args, " "), "to clido list")
+		fmt.Println(chalk.Cyan, "Added", strings.Join(args, " "), "to clido list", chalk.Reset)
 	},
 }
 

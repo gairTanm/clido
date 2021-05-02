@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -20,7 +19,7 @@ func main() {
 
 func must(err error) {
 	if err != nil {
-		fmt.Println(err.Error())
+		//fmt.Println(err.Error())
 		os.Exit(1)
 	}
 }
