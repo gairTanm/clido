@@ -1,0 +1,4 @@
+- [ ] Integrate Chalk
+- [ ] Add `remove` feature
+- [ ] Add done tasks feature
+- [ ] Add(?) karma feature
