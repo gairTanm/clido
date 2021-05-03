@@ -2,4 +2,6 @@
 - [x] Add `remove` feature
 - [x] Add `completed` tasks feature
 - [ ] Add(?) karma feature
-- [ ] Add a time feature to completed tasks
+- [x] Add a time feature to completed tasks
+- [ ] Add flags to show late and on time tasks
+- [ ] Add `shift <date>` feature

@@ -27,11 +27,13 @@ var listCmd = &cobra.Command{
 			return
 		}
 		fmt.Println(chalk.Green.Color("Here are all the tasks still left:"))
-		for _, task := range tasks {
+		for idx, task := range tasks {
 			if task.Start.YearDay() == time.Now().YearDay() {
 				onTime = append(onTime, task)
+				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Green, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			} else {
 				late = append(late, task)
+				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Red, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			}
 		}
 	},
