@@ -86,6 +86,11 @@ func CompletedTasks() ([]Task, error) {
 			task := *t
 			if task.Done.Date.YearDay() == task.Start.YearDay() {
 				completed = append(completed, *t)
+			} else {
+				err = c.Delete(k)
+				if err != nil {
+					return err
+				}
 			}
 		}
 		return nil
