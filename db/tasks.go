@@ -60,6 +60,9 @@ func CompletedTasks() ([]Task, error) {
 	if err != nil {
 		return nil, err
 	}
+	for i, j := 0, len(completed)-1; i < j; i, j = i+1, j-1 {
+		completed[i], completed[j] = completed[j], completed[i]
+	}
 	return completed, nil
 }
 

@@ -5,3 +5,4 @@ To install, make sure you have Go installed, clone the repo, go to the root and 
 - `list` lists all the tasks not yet completed
 - `add <string>` adds a task `string` to the list of tasks you want to complete
 - `do <number>` marks the task number `number` in the list as done
+- `completed` lists all the tasks completed till date in last-completed-comes-first order
