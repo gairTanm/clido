@@ -8,6 +8,7 @@ import (
 )
 
 var taskBucket = []byte("tasks")
+var completedBucket = []byte("completed")
 var db *bolt.DB
 
 type Task struct {
@@ -23,6 +24,7 @@ func Init(dbPath string) error {
 	}
 	return db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists(taskBucket)
+		_, err = tx.CreateBucketIfNotExists(completedBucket)
 		return err
 	})
 }
@@ -40,6 +42,25 @@ func CreateTask(task string) (int, error) {
 		return -1, err
 	}
 	return id, nil
+}
+
+func CompletedTasks() ([]Task, error) {
+	var completed []Task
+	err := db.View(func(tx *bolt.Tx) error {
+		c := tx.Bucket(completedBucket)
+		cur := c.Cursor()
+		for k, v := cur.First(); k != nil; k, v = cur.Next() {
+			completed = append(completed, Task{
+				Key:   btoi(k),
+				Value: string(v),
+			})
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return completed, nil
 }
 
 func AllTasks() ([]Task, error) {
@@ -64,6 +85,11 @@ func AllTasks() ([]Task, error) {
 func DeleteTasks(key int) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(taskBucket)
+		c := tx.Bucket(completedBucket)
+		err := c.Put(itob(key), b.Get(itob(key)))
+		if err != nil {
+			return err
+		}
 		return b.Delete(itob(key))
 	})
 }
