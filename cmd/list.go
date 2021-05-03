@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"clido/db"
 
@@ -16,6 +17,7 @@ var listCmd = &cobra.Command{
 	Short: "List all of the tasks not done",
 	Run: func(cmd *cobra.Command, args []string) {
 		tasks, err := db.AllTasks()
+		var onTime, late []db.Task
 		if err != nil {
 			fmt.Println(chalk.Red.Color("Some error occurred"), chalk.Red.Color(err.Error()))
 			os.Exit(1)
@@ -25,9 +27,12 @@ var listCmd = &cobra.Command{
 			return
 		}
 		fmt.Println(chalk.Green.Color("Here are all the tasks still left:"))
-		for idx, task := range tasks {
-			fmt.Printf("%s%d. %s%s\n", chalk.Green, idx+1, string(task.Value), chalk.Reset)
-
+		for _, task := range tasks {
+			if task.Start.YearDay() == time.Now().YearDay() {
+				onTime = append(onTime, task)
+			} else {
+				late = append(late, task)
+			}
 		}
 	},
 }

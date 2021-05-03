@@ -1,7 +1,10 @@
 package db
 
 import (
+	"bytes"
 	"encoding/binary"
+	"encoding/gob"
+	"fmt"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -42,8 +45,23 @@ func CreateTask(task string) (int, error) {
 		b := tx.Bucket(taskBucket)
 		id64, _ := b.NextSequence()
 		id = int(id64)
+
 		key := itob(int(id64))
-		return b.Put(key, []byte(task))
+		t := Task{
+			Key:   id,
+			Value: task,
+			Start: time.Now(),
+			Done: Completed{
+				Complete: false,
+				Date:     time.Now(),
+			},
+		}
+		buffer := &bytes.Buffer{}
+		err := gob.NewEncoder(buffer).Encode(t)
+		if err != nil {
+			return err
+		}
+		return b.Put(key, buffer.Bytes())
 	})
 	if err != nil {
 		return -1, err
@@ -57,10 +75,18 @@ func CompletedTasks() ([]Task, error) {
 		c := tx.Bucket(completedBucket)
 		cur := c.Cursor()
 		for k, v := cur.First(); k != nil; k, v = cur.Next() {
-			completed = append(completed, Task{
-				Key:   btoi(k),
-				Value: string(v),
-			})
+			buffer := &bytes.Buffer{}
+			buffer.Write(v)
+			d := gob.NewDecoder(buffer)
+			t := &Task{}
+			err := d.Decode(t)
+			if err != nil {
+				return err
+			}
+			task := *t
+			if task.Done.Date.YearDay() == task.Start.YearDay() {
+				completed = append(completed, *t)
+			}
 		}
 		return nil
 	})
@@ -79,10 +105,16 @@ func AllTasks() ([]Task, error) {
 		b := tx.Bucket(taskBucket)
 		c := b.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			tasks = append(tasks, Task{
-				Key:   btoi(k),
-				Value: string(v),
-			})
+			buffer := &bytes.Buffer{}
+			buffer.Write(v)
+			dec := gob.NewDecoder(buffer)
+
+			t := &Task{}
+			err := dec.Decode(t)
+			if err != nil {
+				return err
+			}
+			tasks = append(tasks, *t)
 		}
 		return nil
 	})
@@ -96,7 +128,35 @@ func DeleteTasks(key int) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(taskBucket)
 		c := tx.Bucket(completedBucket)
-		err := c.Put(itob(key), b.Get(itob(key)))
+		task := b.Get(itob(key))
+		buffer := &bytes.Buffer{}
+		t := &Task{}
+		buffer.Write(task)
+		d := gob.NewDecoder(buffer)
+		err := d.Decode(t)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(*t)
+		decTask := *t
+		completedTask := Task{
+			Key:   decTask.Key,
+			Value: decTask.Value,
+			Start: decTask.Start,
+			Done: Completed{
+				Complete: true,
+				Date:     time.Now(),
+			},
+		}
+
+		enBuffer := &bytes.Buffer{}
+		e := gob.NewEncoder(enBuffer)
+		err = e.Encode(completedTask)
+		if err != nil {
+			return err
+		}
+		err = c.Put(itob(key), enBuffer.Bytes())
 		if err != nil {
 			return err
 		}

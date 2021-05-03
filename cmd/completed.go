@@ -19,7 +19,7 @@ var completedCmd = &cobra.Command{
 			fmt.Println(chalk.Red, "Some error occurred while reading the data,", err, chalk.Reset)
 			os.Exit(1)
 		}
-		fmt.Println(chalk.Cyan.Color("Here are the tasks you have completed:"))
+		fmt.Println(chalk.Cyan.Color("Here are the tasks you have completed today:"))
 		for _, t := range completedTasks {
 			fmt.Printf("%s- %s%s\n", chalk.Cyan, t.Value, chalk.Reset)
 		}
