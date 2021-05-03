@@ -6,14 +6,13 @@ import (
 
 	"clido/db"
 
-	"github.com/ttacon/chalk"
-
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
 
-var doCmd = &cobra.Command{
-	Use:   "do <idx>",
-	Short: "Mark a task as done",
+var removeCmd = &cobra.Command{
+	Use:   "remove <idx>",
+	Short: "Remove a task from the list",
 	Run: func(cmd *cobra.Command, args []string) {
 		var ids []int
 		for _, arg := range args {
@@ -35,16 +34,16 @@ var doCmd = &cobra.Command{
 				continue
 			}
 			task := tasks[id-1]
-			err := db.DeleteTasks(task.Key)
+			err := db.RemoveTask(task.Key)
 			if err != nil {
 				fmt.Printf("%sFailed to mark \"%d\" as completed. Error %s\n occurred%s", chalk.Red, id, err, chalk.Reset)
 			} else {
-				fmt.Printf("%sMarked \"%d\" as completed.%s\n", chalk.Magenta, id, chalk.Reset)
+				fmt.Printf("%sRemoved task \"%s\".%s\n", chalk.Magenta, task.Value, chalk.Reset)
 			}
 		}
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(doCmd)
+	RootCmd.AddCommand(removeCmd)
 }

@@ -1,5 +1,5 @@
 # clido
-A command line based task manager/TODO list with a persistent database. Written in Go and uses Bolt DB as the key-value database.
+A command line based task manager/TODO list with a persistent database. Written in Go, it uses [Bolt DB](https://github.com/boltdb/bolt) as the key-value database.
 To install, make sure you have Go installed, clone the repo, go to the root and run `go install .`. Used as `clido <command> <args>`.
  Commands supported currently include,
 - `list` lists all the tasks not yet completed

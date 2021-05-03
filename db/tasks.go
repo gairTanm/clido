@@ -11,9 +11,16 @@ var taskBucket = []byte("tasks")
 var completedBucket = []byte("completed")
 var db *bolt.DB
 
+type Completed struct {
+	Complete bool
+	Date     time.Time
+}
+
 type Task struct {
 	Key   int
 	Value string
+	Start time.Time
+	Done  Completed
 }
 
 func Init(dbPath string) error {
@@ -93,6 +100,13 @@ func DeleteTasks(key int) error {
 		if err != nil {
 			return err
 		}
+		return b.Delete(itob(key))
+	})
+}
+
+func RemoveTask(key int) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(taskBucket)
 		return b.Delete(itob(key))
 	})
 }

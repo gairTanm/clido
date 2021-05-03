@@ -1,5 +1,5 @@
 - [x] Integrate Chalk
-- [ ] Add `remove` feature
+- [x] Add `remove` feature
 - [x] Add `completed` tasks feature
 - [ ] Add(?) karma feature
 - [ ] Add a time feature to completed tasks
