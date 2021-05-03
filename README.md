@@ -4,5 +4,6 @@ To install, make sure you have Go installed, clone the repo, go to the root and 
  Commands supported currently include,
 - `list` lists all the tasks not yet completed
 - `add <string>` adds a task `string` to the list of tasks you want to complete
-- `do <number>` marks the task number `number` in the list as done
+- `do <number>` marks the task number `number` in the list as done, can accept multiple numbers
 - `completed` lists all the tasks completed till date in last-completed-comes-first order
+- `remove <number>` removes the task number `number` in the list as done, can take multiple numbers
