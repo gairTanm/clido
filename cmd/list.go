@@ -36,7 +36,7 @@ var listCmd = &cobra.Command{
 				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Green, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			} else {
 				late = append(late, task)
-				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Red, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
+				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Green, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			}
 		}
 		if lateFlag {

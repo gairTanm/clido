@@ -15,6 +15,10 @@ var completedCmd = &cobra.Command{
 	Short: "List all the tasks completed in the last 24 hours",
 	Run: func(cmd *cobra.Command, args []string) {
 		completedTasks, err := db.CompletedTasks()
+		if len(completedTasks) == 0 {
+			fmt.Printf("%sHey! Get to work today!%s\n", chalk.Magenta, chalk.Reset)
+			os.Exit(1)
+		}
 		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		if err != nil {
 			fmt.Println(chalk.Red, "Some error occurred while reading the data,", err, chalk.Reset)
@@ -22,7 +26,7 @@ var completedCmd = &cobra.Command{
 		}
 		fmt.Println(chalk.Cyan.Color("Here are the tasks you have completed today:"))
 		for _, t := range completedTasks {
-			fmt.Printf("%s- %s%s\n", chalk.Cyan, t.Value, chalk.Reset)
+			fmt.Printf("%s- %d==%d %s%s\n", chalk.Cyan, t.Done.Date.YearDay(), t.Start.YearDay(), t.Value, chalk.Reset)
 		}
 		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},

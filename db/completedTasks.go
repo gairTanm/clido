@@ -3,6 +3,7 @@ package db
 import (
 	"bytes"
 	"encoding/gob"
+	"time"
 
 	"github.com/boltdb/bolt"
 )
@@ -22,7 +23,7 @@ func CompletedTasks() ([]Task, error) {
 				return err
 			}
 			task := *t
-			if task.Done.Date.YearDay() == task.Start.YearDay() {
+			if task.Done.Date.YearDay() == time.Now().YearDay() {
 				completed = append(completed, *t)
 			} else {
 				err = c.Delete(k)
