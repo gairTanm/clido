@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/gob"
-	"fmt"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -143,7 +142,6 @@ func DeleteTasks(key int) error {
 			return err
 		}
 
-		fmt.Println(*t)
 		decTask := *t
 		completedTask := Task{
 			Key:   decTask.Key,
