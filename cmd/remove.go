@@ -15,6 +15,7 @@ var removeCmd = &cobra.Command{
 	Short: "Remove a task from the list",
 	Run: func(cmd *cobra.Command, args []string) {
 		var ids []int
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		for _, arg := range args {
 			id, err := strconv.Atoi(arg)
 			if err != nil {
@@ -41,6 +42,7 @@ var removeCmd = &cobra.Command{
 				fmt.Printf("%sRemoved task \"%s\".%s\n", chalk.Magenta, task.Value, chalk.Reset)
 			}
 		}
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},
 }
 

@@ -15,6 +15,7 @@ var completedCmd = &cobra.Command{
 	Short: "List all the tasks completed in the last 24 hours",
 	Run: func(cmd *cobra.Command, args []string) {
 		completedTasks, err := db.CompletedTasks()
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		if err != nil {
 			fmt.Println(chalk.Red, "Some error occurred while reading the data,", err, chalk.Reset)
 			os.Exit(1)
@@ -23,6 +24,7 @@ var completedCmd = &cobra.Command{
 		for _, t := range completedTasks {
 			fmt.Printf("%s- %s%s\n", chalk.Cyan, t.Value, chalk.Reset)
 		}
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},
 }
 

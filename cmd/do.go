@@ -16,6 +16,7 @@ var doCmd = &cobra.Command{
 	Short: "Mark a task as done",
 	Run: func(cmd *cobra.Command, args []string) {
 		var ids []int
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		for _, arg := range args {
 			id, err := strconv.Atoi(arg)
 			if err != nil {
@@ -39,9 +40,10 @@ var doCmd = &cobra.Command{
 			if err != nil {
 				fmt.Printf("%sFailed to mark \"%d\" as completed. Error %s\n occurred%s", chalk.Red, id, err, chalk.Reset)
 			} else {
-				fmt.Printf("%sMarked \"%d\" as completed.%s\n", chalk.Magenta, id, chalk.Reset)
+				fmt.Printf("%sMarked \"%s\" as completed.%s\n", chalk.Magenta, task.Value, chalk.Reset)
 			}
 		}
+		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},
 }
 
