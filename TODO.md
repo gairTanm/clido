@@ -3,5 +3,8 @@
 - [x] Add `completed` tasks feature
 - [ ] Add(?) karma feature
 - [x] Add a time feature to completed tasks
-- [ ] Add flags to show late and on time tasks
-- [ ] Add `shift <date>` feature
+- [x] Add a flag to show late and on time tasks
+- [ ] Add `shift <task_number> <date>` feature
+- [ ] Add priorities  
+- [x] Refactor `tasks.go`
+- [x] UI changes
