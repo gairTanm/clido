@@ -32,7 +32,7 @@ func DeleteTasks(key int) error {
 				Date:     time.Now(),
 			},
 		}
-
+		//fmt.Println(completedTask.Done.Date.YearDay())
 		enBuffer := &bytes.Buffer{}
 		e := gob.NewEncoder(enBuffer)
 		err = e.Encode(completedTask)

@@ -23,13 +23,9 @@ func CompletedTasks() ([]Task, error) {
 				return err
 			}
 			task := *t
+			//fmt.Println(time.Now().YearDay(), task.Done.Date.YearDay(), task.Start.YearDay())
 			if task.Done.Date.YearDay() == time.Now().YearDay() {
 				completed = append(completed, *t)
-			} else {
-				err = c.Delete(k)
-				if err != nil {
-					return err
-				}
 			}
 		}
 		return nil

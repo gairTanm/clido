@@ -26,7 +26,7 @@ var completedCmd = &cobra.Command{
 		}
 		fmt.Println(chalk.Cyan.Color("Here are the tasks you have completed today:"))
 		for _, t := range completedTasks {
-			fmt.Printf("%s- %d==%d %s%s\n", chalk.Cyan, t.Done.Date.YearDay(), t.Start.YearDay(), t.Value, chalk.Reset)
+			fmt.Printf("%s- %s%s\n", chalk.Cyan, t.Value, chalk.Reset)
 		}
 		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},
