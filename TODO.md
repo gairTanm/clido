@@ -8,4 +8,4 @@
 - [x] Add priorities
 - [x] Refactor `tasks.go`
 - [x] UI changes
-- [ ] Add a table to show tasks, priorities, running late etc.
+- [x] Add a table to show tasks, priorities, running late etc.
