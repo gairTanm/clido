@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"sort"
 	"time"
 
 	"clido/db"
@@ -20,7 +21,7 @@ var listCmd = &cobra.Command{
 		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		lateFlag, _ := cmd.Flags().GetBool("late")
 
-		var onTime, late []db.Task
+		var late []db.Task
 		if err != nil {
 			fmt.Println(chalk.Red.Color("Some error occurred"), chalk.Red.Color(err.Error()))
 			os.Exit(1)
@@ -29,21 +30,21 @@ var listCmd = &cobra.Command{
 			fmt.Println(chalk.Cyan, "You have no tasks left, add one, maybe?", chalk.Reset, "😳")
 			return
 		}
-		fmt.Println(chalk.Green.Color("Here are all the tasks still left:"))
-		for idx, task := range tasks {
-			if task.Start.YearDay() == time.Now().YearDay() {
-				onTime = append(onTime, task)
-				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Green, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
-			} else {
+		sort.Sort(db.ByPriority(tasks))
+		for _, task := range tasks {
+			if task.Start.YearDay() != time.Now().YearDay() {
 				late = append(late, task)
-				fmt.Printf("%s%d. %s: %s %d%s\n", chalk.Green, idx+1, task.Value, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			}
 		}
 		if lateFlag {
-			fmt.Println("--------------------------------------------------------------------------------------------------------")
 			fmt.Printf("%sHere are all the tasks you're running late on!%s\n", chalk.Red, chalk.Reset)
 			for _, lateTask := range late {
 				fmt.Printf("%s- %s: %s %d%s\n", chalk.Red, lateTask.Value, lateTask.Start.Month(), lateTask.Start.Day(), chalk.Reset)
+			}
+		} else {
+			fmt.Println(chalk.Green.Color("Here are all the tasks still left:"))
+			for idx, task := range tasks {
+				fmt.Printf("%s%d. %s: %f %s %d%s\n", chalk.Green, idx+1, task.Value, task.Priority, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			}
 		}
 		fmt.Println("--------------------------------------------------------------------------------------------------------")

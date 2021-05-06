@@ -16,11 +16,20 @@ type Completed struct {
 }
 
 type Task struct {
-	Key   int
-	Value string
-	Start time.Time
-	Done  Completed
+	Key      int
+	Value    string
+	Priority float64
+	Start    time.Time
+	Done     Completed
 }
+
+type ByPriority []Task
+
+func (t ByPriority) Len() int { return len(t) }
+
+func (t ByPriority) Less(i, j int) bool { return t[i].Priority > t[j].Priority }
+
+func (t ByPriority) Swap(i, j int) { t[i], t[j] = t[j], t[i] }
 
 func Init(dbPath string) error {
 	var err error

@@ -8,7 +8,7 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-func CreateTask(task string) (int, error) {
+func CreateTask(task string, priority float64) (int, error) {
 	var id int
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(taskBucket)
@@ -17,9 +17,10 @@ func CreateTask(task string) (int, error) {
 
 		key := itob(int(id64))
 		t := Task{
-			Key:   id,
-			Value: task,
-			Start: time.Now(),
+			Key:      id,
+			Value:    task,
+			Priority: priority,
+			Start:    time.Now(),
 			Done: Completed{
 				Complete: false,
 				Date:     time.Now(),

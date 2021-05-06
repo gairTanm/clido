@@ -16,6 +16,8 @@ var doCmd = &cobra.Command{
 	Short: "Mark a task as done",
 	Run: func(cmd *cobra.Command, args []string) {
 		var ids []int
+		priorityFlag, _ := cmd.Flags().GetFloat64("priority")
+		fmt.Println(priorityFlag)
 		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		for _, arg := range args {
 			id, err := strconv.Atoi(arg)
@@ -49,4 +51,5 @@ var doCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(doCmd)
+	doCmd.Flags().Float64("priority", 0.0, "Add a priority value, can be negative, to the task, higher the better")
 }
