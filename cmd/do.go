@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 
 	"clido/db"
@@ -26,6 +27,7 @@ var doCmd = &cobra.Command{
 			}
 		}
 		tasks, err := db.AllTasks()
+		sort.Sort(db.ByPriority(tasks))
 		if err != nil {
 			fmt.Println(chalk.Red, "Something went wrong", err, chalk.Reset)
 			return
