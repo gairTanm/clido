@@ -18,14 +18,12 @@ var addCmd = &cobra.Command{
 		task := strings.Join(args, " ")
 		priority, _ := cmd.Flags().GetFloat64("priority")
 		fmt.Println(priority)
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		_, err := db.CreateTask(task, priority)
 		if err != nil {
 			fmt.Println(chalk.Red, "Some error occurred", err.Error(), "can't continue", chalk.Reset)
 			return
 		}
-		fmt.Println(chalk.Cyan, "Added", strings.Join(args, " "), "to clido's list, with priority", priority, chalk.Reset)
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
+		fmt.Printf("%sAdded %s to clido's list, with priority %f%s\n", chalk.Cyan, strings.Join(args, " "), priority, chalk.Reset)
 	},
 }
 

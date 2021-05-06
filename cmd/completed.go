@@ -19,7 +19,6 @@ var completedCmd = &cobra.Command{
 			fmt.Printf("%sHey! Get to work today!%s\n", chalk.Magenta, chalk.Reset)
 			os.Exit(1)
 		}
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		if err != nil {
 			fmt.Println(chalk.Red, "Some error occurred while reading the data,", err, chalk.Reset)
 			os.Exit(1)
@@ -28,7 +27,6 @@ var completedCmd = &cobra.Command{
 		for _, t := range completedTasks {
 			fmt.Printf("%s- %s%s\n", chalk.Cyan, t.Value, chalk.Reset)
 		}
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
 	},
 }
 
