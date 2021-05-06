@@ -5,6 +5,7 @@
 - [x] Add a time feature to completed tasks
 - [x] Add a flag to show late and on time tasks
 - [ ] Add `shift <task_number> <date>` feature
-- [ ] Add priorities  
+- [x] Add priorities
 - [x] Refactor `tasks.go`
 - [x] UI changes
+- [ ] Add a table to show tasks, priorities, running late etc.
