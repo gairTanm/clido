@@ -8,9 +8,10 @@ import (
 
 	"clido/db"
 
-	"github.com/ttacon/chalk"
+	"github.com/jedib0t/go-pretty/table"
 
 	"github.com/spf13/cobra"
+	"github.com/ttacon/chalk"
 )
 
 var listCmd = &cobra.Command{
@@ -18,8 +19,10 @@ var listCmd = &cobra.Command{
 	Short: "List all of the tasks not done",
 	Run: func(cmd *cobra.Command, args []string) {
 		tasks, err := db.AllTasks()
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
 		lateFlag, _ := cmd.Flags().GetBool("late")
+
+		t := table.NewWriter()
+		t.SetOutputMirror(os.Stdout)
 
 		var late []db.Task
 		if err != nil {
@@ -38,16 +41,21 @@ var listCmd = &cobra.Command{
 		}
 		if lateFlag {
 			fmt.Printf("%sHere are all the tasks you're running late on!%s\n", chalk.Red, chalk.Reset)
+			t.AppendHeader(table.Row{"#", "Task Name", "Due Date"})
 			for _, lateTask := range late {
-				fmt.Printf("%s- %s: %s %d%s\n", chalk.Red, lateTask.Value, lateTask.Start.Month(), lateTask.Start.Day(), chalk.Reset)
+				t.AppendRow(table.Row{"-", lateTask.Value, fmt.Sprintf("%s %d", lateTask.Start.Month(), lateTask.Start.Day())})
+				//fmt.Printf("%s- %s\t %s %d%s\n", chalk.Red, lateTask.Value, lateTask.Start.Month(), lateTask.Start.Day(), chalk.Reset)
 			}
 		} else {
 			fmt.Println(chalk.Green.Color("Here are all the tasks still left:"))
+			t.AppendHeader(table.Row{"#", "Task Name", "Priority", "Due Date"})
 			for idx, task := range tasks {
-				fmt.Printf("%s%d. %s: %f %s %d%s\n", chalk.Green, idx+1, task.Value, task.Priority, task.Start.Month(), task.Start.Day(), chalk.Reset)
+				t.AppendRow(table.Row{idx + 1, task.Value, task.Priority, fmt.Sprintf("%s %d", task.Start.Month(), task.Start.Day())})
+				//fmt.Printf("%s%d.\t%s\t\t%f\t %s %d%s\n", chalk.Green, idx+1, task.Value, task.Priority, task.Start.Month(), task.Start.Day(), chalk.Reset)
 			}
 		}
-		fmt.Println("--------------------------------------------------------------------------------------------------------")
+		t.SetStyle(table.StyleColoredBright)
+		t.Render()
 	},
 }
 
